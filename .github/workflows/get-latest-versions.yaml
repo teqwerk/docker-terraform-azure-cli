@@ -25,7 +25,7 @@ jobs:
         env:
           release_url: https://api.github.com/repos/${{ matrix.repository }}/releases/latest
         run: |
-          version=$(curl -sL ${{ env.release_url }} | jq -r '.tag_name' | tr -d 'v')
+          version=$(curl -sL ${{ env.release_url }} | jq -r '.tag_name' | tr -d 'v' | sed 's/^azure-cli-//')
           
           repository=${{ matrix.repository }}
 
