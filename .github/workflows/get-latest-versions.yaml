@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "version.txt"
+      - "versions.json"
   schedule:
     - cron: "0 0 * * *"
 
