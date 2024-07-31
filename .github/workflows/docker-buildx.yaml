@@ -69,5 +69,5 @@ jobs:
             TERRAFORM_VERSION=${{ steps.terraform_version.outputs.terraform_version }}
             AZURE_CLI_VERSION=${{ steps.azure_cli_version.outputs.azure_cli_version }}
           tags: |
-            ${{ env.IMAGE_NAME }}:latest
-            ${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:terraform-${{ steps.terraform_version.outputs.terraform_version }}-azure-cli-${{ steps.azure_cli_version.outputs.azure_cli_version }}
