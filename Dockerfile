@@ -28,7 +28,7 @@ ARG HASHICORP_PRODUCT=terraform
 ARG TERRAFORM_VERSION
 ARG AZURE_CLI_VERSION
 
-LABEL maintainer="TEQWERK GmbH <cedric.ahlers@teqwerk.de>"
+LABEL maintainer="TEQWERK GmbH"
 LABEL com.hashicorp.terraform.version="${TERRAFORM_VERSION}"
 LABEL org.opencontainers.image.source="https://github.com/teqwerk/docker-terraform-azure-cli"
 LABEL org.opencontainers.image.description="This image contains azure-cli and terraform to be used in CI/CD pipelines"
