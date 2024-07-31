@@ -1,6 +1,6 @@
 ARG ALPINE_VERSION=3
 
-FROM --platform=$BUILDPLATFORM alpine:${ALPINE_VERSION} as build
+FROM --platform=$BUILDPLATFORM alpine:${ALPINE_VERSION} AS build
 
 ARG HASHICORP_PRODUCT=terraform
 ARG TERRAFORM_VERSION
@@ -22,7 +22,7 @@ RUN apk add --update --virtual .deps --no-cache gnupg && \
     apk del .deps
 
 
-FROM alpine:${ALPINE_VERSION} as final
+FROM alpine:${ALPINE_VERSION} AS final
 
 ARG HASHICORP_PRODUCT=terraform
 ARG TERRAFORM_VERSION
