@@ -10,6 +10,9 @@ on:
 jobs:
   get-version:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
     strategy:
       matrix:
         repository: ["hashicorp/terraform", "Azure/azure-cli"]
@@ -22,9 +25,8 @@ jobs:
         env:
           release_url: https://api.github.com/repos/${{ matrix.repository }}/releases/latest
         run: |
-          curl -sL ${{ env.release_url }} | \
-          echo "release_version=$(jq -r '.tag_name' | tr -d 'v')" >> $GITHUB_ENV
-
+          version=$(curl -sL ${{ env.release_url }} | jq -r '.tag_name' | tr -d 'v')
+          
           repository=${{ matrix.repository }}
 
           # Update the JSON file based on the repository
@@ -37,7 +39,7 @@ jobs:
               exit 1
           fi
 
-          echo "version=$release_version" >> $GITHUB_OUTPUT
+          echo "version=$version" >> $GITHUB_OUTPUT
 
       - name: Check for modified files
         id: git-check
