@@ -31,9 +31,9 @@ jobs:
 
           # Update the JSON file based on the repository
           if [[ "$repository" == "hashicorp/terraform" ]]; then
-              jq --arg terraform_version "$terraform_version" '.terraform_version = $terraform_version' versions.json > tmp.json && mv tmp.json versions.json
+              jq --arg version "$version" '.terraform_version = $version' versions.json > tmp.json && mv tmp.json versions.json
           elif [[ "$repository" == "Azure/azure-cli" ]]; then
-              jq --arg azure_cli_version "$azure_cli_version" '.azure_cli_version = $azure_cli_version' versions.json > tmp.json && mv tmp.json versions.json
+              jq --arg version "$version" '.azure_cli_version = $version' versions.json > tmp.json && mv tmp.json versions.json
           else
               echo "Unknown repository: $repository"
               exit 1
