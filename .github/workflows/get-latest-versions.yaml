@@ -50,5 +50,6 @@ jobs:
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git commit -am "Update release version to ${{ steps.version.outputs.version }}"
+          git commit -am "Update ${{ matrix.repository }} package version to ${{ steps.version.outputs.version }}"
+          git pull --rebase
           git push
