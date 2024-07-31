@@ -4,6 +4,7 @@ on:
   # repository_dispatch:
   #   types:
   #     - base-image-update
+  workflow_dispatch:
   push:
     branches:
       - main
