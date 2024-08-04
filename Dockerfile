@@ -28,10 +28,12 @@ ARG HASHICORP_PRODUCT=terraform
 ARG TERRAFORM_VERSION
 ARG AZURE_CLI_VERSION
 
+ENV PIP_PREFER_BINARY=1
+
 # Install Azure CLI
 RUN apk add --no-cache --update python3 py3-pip 
 RUN apk add --no-cache --update --virtual=build gcc musl-dev python3-dev libffi-dev openssl-dev cargo make && \ 
-    pip3 install --no-cache-dir --prefer-binary azure-cli==${AZURE_CLI_VERSION} --break-system-packages
+    pip3 install --no-cache-dir azure-cli==${AZURE_CLI_VERSION} --break-system-packages
 RUN echo "source /usr/bin/az.completion.sh" >> ~/.bashrc
 
 # Add terraform binary 
