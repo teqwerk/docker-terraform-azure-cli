@@ -10,6 +10,7 @@ on:
       - main
     paths:
       - "Dockerfile"
+      - "versions.json"
   pull_request:
     branches:
       - main
