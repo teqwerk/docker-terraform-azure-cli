@@ -54,6 +54,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v5
@@ -66,9 +72,12 @@ jobs:
           build-args: |
             TERRAFORM_VERSION=${{ steps.version.outputs.terraform_version }}
             AZURE_CLI_VERSION=${{ steps.version.outputs.azure_cli_version }}
+          labels: ${{ steps.meta.outputs.labels }}
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:terraform-${{ steps.version.outputs.terraform_version }}-azure-cli-${{ steps.version.outputs.azure_cli_version }}
+            ${{ steps.meta.outputs.tags }}
+
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
