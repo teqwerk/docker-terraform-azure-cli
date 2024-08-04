@@ -28,10 +28,6 @@ ARG HASHICORP_PRODUCT=terraform
 ARG TERRAFORM_VERSION
 ARG AZURE_CLI_VERSION
 
-LABEL maintainer="TEQWERK GmbH"
-LABEL com.hashicorp.terraform.version="${TERRAFORM_VERSION}"
-LABEL org.opencontainers.image.description="This image contains azure-cli and terraform to be used in CI/CD pipelines"
-
 # Install Azure CLI
 RUN apk add --no-cache --update python3 py3-pip 
 RUN apk add --no-cache --update --virtual=build gcc musl-dev python3-dev libffi-dev openssl-dev cargo make && \ 
