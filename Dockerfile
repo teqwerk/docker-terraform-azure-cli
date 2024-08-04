@@ -34,7 +34,8 @@ ENV PIP_PREFER_BINARY=1
 RUN apk add --no-cache --update python3 py3-pip 
 RUN apk add --no-cache --update --virtual=build gcc musl-dev python3-dev libffi-dev openssl-dev cargo make && \ 
     pip3 install --no-cache-dir azure-cli==${AZURE_CLI_VERSION} --break-system-packages
-RUN echo "source /usr/bin/az.completion.sh" >> ~/.bashrc
+RUN echo "source /usr/bin/az.completion.sh" >> ~/.bashrc && \
+    az config set core.collect_telemetry=no
 
 # Add terraform binary 
 RUN apk add --quiet --no-cache --upgrade git openssh
