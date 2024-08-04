@@ -30,25 +30,34 @@ ARG AZURE_CLI_VERSION
 
 ENV PIP_PREFER_BINARY=1
 
+RUN adduser -S app -G users
+
 # Install Azure CLI
 RUN apk add --no-cache --update python3 py3-pip 
 RUN apk add --no-cache --update --virtual=build gcc musl-dev python3-dev libffi-dev openssl-dev cargo make && \ 
     pip3 install --no-cache-dir azure-cli==${AZURE_CLI_VERSION} --break-system-packages
-RUN echo "source /usr/bin/az.completion.sh" >> ~/.bashrc && \
-    az config set core.collect_telemetry=no
 
 # Add terraform binary 
 RUN apk add --quiet --no-cache --upgrade git openssh
 COPY --from=build ["/usr/bin/terraform", "/usr/bin/terraform"]
+
+# Add tooling
+RUN apk add --quiet --no-cache --upgrade bash bash-completion curl jq
+
+USER app
+WORKDIR /home/app
+
+# Configure Azure CLI
+RUN echo "source /usr/bin/az.completion.sh" >> ~/.bashrc && \
+    az config set core.collect_telemetry=no
+
+# Configure Terraform
 RUN terraform -install-autocomplete && \
     # Add common alias for terraform
     echo "alias tf=terraform" >> ~/.bashrc && \
     echo "alias tfyolo='terraform apply -auto-approve'" >> ~/.bashrc && \
     # Add bash completion for alias
     echo "complete -C /usr/bin/terraform tf" >> ~/.bashrc
-
-# Add tooling
-RUN apk add --quiet --no-cache --upgrade bash bash-completion curl jq
 
 ENV AZ_INSTALLER=DOCKER
 
