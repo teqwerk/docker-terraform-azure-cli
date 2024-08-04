@@ -30,9 +30,7 @@ ARG AZURE_CLI_VERSION
 
 LABEL maintainer="TEQWERK GmbH"
 LABEL com.hashicorp.terraform.version="${TERRAFORM_VERSION}"
-LABEL org.opencontainers.image.source="https://github.com/teqwerk/docker-terraform-azure-cli"
 LABEL org.opencontainers.image.description="This image contains azure-cli and terraform to be used in CI/CD pipelines"
-#LABEL org.opencontainers.image.licenses=TODO
 
 # Install Azure CLI
 RUN apk add --no-cache --update python3 py3-pip 
