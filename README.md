@@ -1,3 +1,6 @@
+[![Build docker images](https://github.com/teqwerk/docker-terraform-azure-cli/actions/workflows/docker-buildx.yaml/badge.svg)](https://github.com/teqwerk/docker-terraform-azure-cli/actions/workflows/docker-buildx.yaml)
+[![Get latest release version](https://github.com/teqwerk/docker-terraform-azure-cli/actions/workflows/get-latest-versions.yaml/badge.svg)](https://github.com/teqwerk/docker-terraform-azure-cli/actions/workflows/get-latest-versions.yaml)
+
 # Terraform and Azure CLI Docker image
 
 Available images can be found in the [GitHub Container Registry](https://github.com/teqwerk/docker-terraform-azure-cli/pkgs/container/terraform-azure-cli)
