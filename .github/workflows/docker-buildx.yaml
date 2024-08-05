@@ -102,7 +102,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FULL }}:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FULL }}:terraform-${{ matrix.terraform_versions }}-azure-cli-${{ matrix.azure_cli_versions }}
             ${{ steps.meta.outputs.tags }}
 
