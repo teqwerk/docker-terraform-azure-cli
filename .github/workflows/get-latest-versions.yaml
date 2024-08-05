@@ -26,14 +26,14 @@ jobs:
           release_url: https://api.github.com/repos/${{ matrix.repository }}/releases/latest
         run: |
           version=$(curl -sL ${{ env.release_url }} | jq -r '.tag_name' | tr -d 'v' | sed 's/^azure-cli-//')
-          
+
           repository=${{ matrix.repository }}
 
           # Update the JSON file based on the repository
           if [[ "$repository" == "hashicorp/terraform" ]]; then
-              jq --arg version "$version" '.terraform_version = $version' versions.json > tmp.json && mv tmp.json versions.json
+              jq --arg version "$version" '.terraform_versions |= [$version] + .[:-1]' versions.json > tmp.json && mv tmp.json versions.json
           elif [[ "$repository" == "Azure/azure-cli" ]]; then
-              jq --arg version "$version" '.azure_cli_version = $version' versions.json > tmp.json && mv tmp.json versions.json
+              jq --arg version "$version" '.azure_cli_versions |= [$version] + .[:-1]' versions.json > tmp.json && mv tmp.json versions.json
           else
               echo "Unknown repository: $repository"
               exit 1

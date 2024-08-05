@@ -1,4 +1,4 @@
 {
-  "terraform_version": "1.9.3",
-  "azure_cli_version": "2.62.0"
+  "terraform_versions": ["1.9.3", "1.9.2", "1.9.1"],
+  "azure_cli_versions": ["2.62.0", "2.61.0", "2.60.0"]
 }
