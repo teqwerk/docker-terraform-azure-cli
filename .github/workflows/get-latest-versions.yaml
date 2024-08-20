@@ -34,9 +34,6 @@ jobs:
               jq --arg version "$version" '.terraform_versions |= [$version] + .[:-1]' versions.json > tmp.json && mv tmp.json versions.json
           elif [[ "$repository" == "Azure/azure-cli" ]] && [[ "$version" != "$(jq -r '.azure_cli_versions[0]' versions.json)" ]]; then
               jq --arg version "$version" '.azure_cli_versions |= [$version] + .[:-1]' versions.json > tmp.json && mv tmp.json versions.json
-          else
-              echo "Unknown repository: $repository"
-              exit 1
           fi
 
           echo "version=$version" >> $GITHUB_OUTPUT
