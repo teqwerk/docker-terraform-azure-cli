@@ -34,8 +34,9 @@ jobs:
       - name: Save supported versions as output
         id: set-matrix
         run: |
-          SUPPORTED_VERSIONS=$(cat ./versions.json)
-          echo "matrix=$SUPPORTED_VERSIONS" >> $GITHUB_OUTPUT
+          echo 'matrix<<EOF' >> $GITHUB_OUTPUT
+          cat versions.json >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
 
   docker-buildx:
     runs-on: ubuntu-latest
