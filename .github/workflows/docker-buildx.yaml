@@ -107,4 +107,4 @@ jobs:
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FULL}}
           subject-digest: ${{ steps.docker_build.outputs.digest }}
-          push-to-registry: true
+          push-to-registry: ${{ github.event_name != 'pull_request' }}
