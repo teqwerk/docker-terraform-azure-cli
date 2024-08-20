@@ -35,10 +35,7 @@ jobs:
         id: set-matrix
         run: |
           SUPPORTED_VERSIONS=$(cat ./versions.json)
-          SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//'%'/%25}"
-          SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\n'/%0A}"
-          SUPPORTED_VERSIONS="${SUPPORTED_VERSIONS//$'\r'/%0D}"
-          echo "::set-output name=matrix::${SUPPORTED_VERSIONS}"
+          echo "matrix=$SUPPORTED_VERSIONS" >> $GITHUB_OUTPUT
 
   docker-buildx:
     runs-on: ubuntu-latest
