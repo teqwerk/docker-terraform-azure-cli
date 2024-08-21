@@ -27,5 +27,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           image-names: ${{ env.IMAGE_NAME }}
           tag-selection: untagged
-          cut-off: 2w 3d
-          dry-run: true
+          cut-off: 1m
+          dry-run: false
