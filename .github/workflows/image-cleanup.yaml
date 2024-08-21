@@ -1,0 +1,26 @@
+name: Container Registry Cleanup
+
+permissions:
+  contents: read
+  packages: write
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 2 * * mon"
+
+env:
+  IMAGE_NAME: terraform-azure-cli
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      #   - uses: "tweedegolf/cleanup-images-action@main"
+      #     with:
+      #       package: debian
+      #       filters: "^nightly-\\d{2}-\\d{2}-\\d{4}$"
+      #       keep_n: 5
+      - uses: "tweedegolf/cleanup-untagged-images-action@ff5f9dbad466487a9766f272602ad759cbfe6937"
+        with:
+          package: ${{ env.IMAGE_NAME }}
