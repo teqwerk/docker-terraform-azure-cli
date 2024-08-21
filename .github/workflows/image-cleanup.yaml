@@ -21,6 +21,11 @@ jobs:
       #       package: debian
       #       filters: "^nightly-\\d{2}-\\d{2}-\\d{4}$"
       #       keep_n: 5
-      - uses: "tweedegolf/cleanup-untagged-images-action@ff5f9dbad466487a9766f272602ad759cbfe6937"
+      - uses: snok/container-retention-policy@v3.0.0
         with:
-          package: ${{ env.IMAGE_NAME }}
+          account: user
+          token: ${{ secrets.GITHUB_TOKEN }}
+          image-names: ${{ env.IMAGE_NAME }}
+          tag-selection: untagged
+          cut-off: 2w 3d
+          dry-run: true
