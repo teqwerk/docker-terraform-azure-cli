@@ -82,6 +82,9 @@ jobs:
             org.opencontainers.image.description="This image contains azure-cli and terraform to be used in CI/CD pipelines or local development."
             com.hashicorp.terraform.version=${{ matrix.terraform_versions }}
             com.azure.cli.version=${{ matrix.azure_cli_versions }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
 
       - name: Build and push
         id: docker_build
