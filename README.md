@@ -26,7 +26,7 @@ Available images can be found in the [GitHub Container Registry](https://github.
 You can pull the pre-built image from the GitHub Container Registry:
 
 ```bash
-docker pull ghcr.io/teqwerk/terraform-azure-cli:latest
+docker pull ghcr.io/teqwerk/terraform-azure-cli:main
 ```
 
 **OR** you can build the image yourself:
@@ -41,7 +41,7 @@ docker build --build-arg TERRAFORM_VERSION=1.9.3 --build-arg AZURE_CLI_VERSION=2
 You can run the container using the following command:
 
 ```bash
-docker run -it --rm ghcr.io/teqwerk/terraform-azure-cli:latest
+docker run -it --rm ghcr.io/teqwerk/terraform-azure-cli:main
 ```
 
 Once inside the container, you can use terraform and az commands as you would normally:
@@ -54,6 +54,19 @@ az --version
 ## Updating Versions
 
 The versions of Terraform and Azure CLI are managed in the `versions.json` file. The GitHub Actions workflows automatically update these versions every `24 h` and rebuild the Docker image.
+
+## View attestation
+
+> [!TIP]
+> Attestations help you helps you protect against supply chain attacks by verifying the integrity of the image. Read more about attestation [here](https://github.blog/changelog/2024-06-25-artifact-attestations-is-generally-available/).
+
+You can view the attestation of the image by running the following github cli command:
+
+```bash
+gh attestation verify oci://ghcr.io/teqwerk/terraform-azure-cli:main --owner teqwerk
+```
+
+_Replace `main` with the tag you want to verify._
 
 ## Contributing
 
