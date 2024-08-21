@@ -21,22 +21,36 @@ env:
   IMAGE_NAME_FULL: ${{ github.repository_owner }}/terraform-azure-cli
 
 jobs:
+  load-matrix-build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Save supported versions as output
+        id: set-matrix
+        run: |
+          echo 'matrix<<EOF' >> $GITHUB_OUTPUT
+          cat versions.json >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
   docker-buildx:
     runs-on: ubuntu-latest
+    needs: load-matrix-build
     permissions:
       contents: read
       packages: write
       attestations: write
       id-token: write
+    strategy:
+      matrix: ${{ fromJSON(needs.load-matrix-build.outputs.matrix) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Set versions
-        id: version
-        run: |
-          echo "terraform_version=$(jq -r '.terraform_version' versions.json)" >> $GITHUB_OUTPUT
-          echo "azure_cli_version=$(jq -r '.azure_cli_version' versions.json)" >> $GITHUB_OUTPUT
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -66,8 +80,8 @@ jobs:
             org.opencontainers.image.vendor=${{ github.repository_owner}}
             org.opencontainers.image.title=${{ env.IMAGE_NAME}}
             org.opencontainers.image.description="This image contains azure-cli and terraform to be used in CI/CD pipelines or local development."
-            com.hashicorp.terraform.version=${{ steps.version.outputs.terraform_version }}
-            com.azure.cli.version=${{ steps.version.outputs.azure_cli_version }}
+            com.hashicorp.terraform.version=${{ matrix.terraform_versions }}
+            com.azure.cli.version=${{ matrix.azure_cli_versions }}
 
       - name: Build and push
         id: docker_build
@@ -81,18 +95,18 @@ jobs:
             linux/amd64
             linux/arm64/v8
           build-args: |
-            TERRAFORM_VERSION=${{ steps.version.outputs.terraform_version }}
-            AZURE_CLI_VERSION=${{ steps.version.outputs.azure_cli_version }}
+            TERRAFORM_VERSION=${{ matrix.terraform_versions }}
+            AZURE_CLI_VERSION=${{ matrix.azure_cli_versions }}
           labels: ${{ steps.meta.outputs.labels }}
           annotations: ${{ steps.meta.outputs.annotations }}
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FULL }}:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FULL }}:terraform-${{ steps.version.outputs.terraform_version }}-azure-cli-${{ steps.version.outputs.azure_cli_version }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FULL }}:terraform-${{ matrix.terraform_versions }}-azure-cli-${{ matrix.azure_cli_versions }}
             ${{ steps.meta.outputs.tags }}
 
-      - name: Generate artifact attestation
+      - if: github.event_name != 'pull_request'
+        name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FULL}}
           subject-digest: ${{ steps.docker_build.outputs.digest }}
-          push-to-registry: true
+          push-to-registry: ${{ github.event_name != 'pull_request' }}
