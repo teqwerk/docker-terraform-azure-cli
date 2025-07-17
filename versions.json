@@ -5,8 +5,8 @@
     "1.12.2"
   ],
   "azure_cli_versions": [
-    "null",
     "2.75.0",
-    "null"
+    "null",
+    "2.75.0"
   ]
 }
