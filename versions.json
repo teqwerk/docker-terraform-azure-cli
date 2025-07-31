@@ -1,8 +1,8 @@
 {
   "terraform_versions": [
-    "null",
     "1.12.2",
-    "null"
+    "null",
+    "1.12.2"
   ],
   "azure_cli_versions": [
     "2.75.0",
